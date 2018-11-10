@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.x</groupId>
@@ -8,7 +9,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8
+        </project.reporting.outputEncoding>
         <jdk.version>1.8</jdk.version>
         <jackson.version>2.9.6</jackson.version>
         <log4j2.version>2.9.1</log4j2.version>
@@ -48,6 +50,47 @@
                 <configuration>
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.handlers</resource>
+                        </transformer>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.schemas</resource>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.tooling</resource>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>com.x.framework.bootstrap.Launcher
+                            </mainClass>
+                        </transformer>
+                    </transformers>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
             </plugin>
         </plugins>
@@ -115,19 +158,19 @@
         <repository>
             <id>release</id>
             <name>Internal Releases</name>
-            <url>http://47.93.255.243:8081/repository/maven-releases/</url>
+            <url>http://nexus.ezaisheng.com/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>Snapshots</id>
             <name>Internal Snapshots</name>
-            <url>http://47.93.255.243:8081/repository/maven-snapshots/</url>
+            <url>http://nexus.ezaisheng.com/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>nuxes-snapshots</id>
-            <url>http://47.93.255.243:8081/repository/maven-snapshots/</url>
+            <url>http://nexus.ezaisheng.com/repository/maven-snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
